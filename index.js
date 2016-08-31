@@ -38,6 +38,9 @@ SwiftClient.prototype.create = function (name, publicRead, meta, extra) {
   }
 
   if (publicRead) {
+    if (!extra)
+      extra = {};
+    
     extra['x-container-read'] = '.r:*';
   }
 
