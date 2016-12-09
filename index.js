@@ -3,7 +3,7 @@ const requestp = require('request-promise');
 const SwiftContainer = require('./SwiftContainer');
 const SwiftEntity = require('./SwiftEntity');
 const util = require('util');
-
+const urlHelper = require('./urlHelper');
 
 module.exports = SwiftClient;
 
@@ -14,12 +14,12 @@ function SwiftClient(url, token) {
 util.inherits(SwiftClient, SwiftEntity);
 
 
-SwiftClient.create = function (url, username, password) {
+SwiftClient.create = function (url, account, version, username, password) {
   var _this = this;
 
   return requestp({
       method: 'GET',
-      uri: url,
+      uri:  urlHelper.combineUrl(urlHelper.combineUrl(url,"auth"),version),
       headers: {
         'x-auth-user': username,
         'x-auth-key': password
@@ -27,7 +27,7 @@ SwiftClient.create = function (url, username, password) {
       resolveWithFullResponse: true
     })
     .then(function (response) {
-      return new SwiftClient(url, response.headers['x-auth-token']);
+      return new SwiftClient(urlHelper.combineUrl(urlHelper.combineUrl(url, version), account), response.headers['x-auth-token']);
     });
 };
 
@@ -43,7 +43,7 @@ SwiftClient.prototype.create = function (name, publicRead, meta, extra) {
 
     extra['x-container-read'] = '.r:*';
   }
-
+  console.log("this url is: "+this.url+"/"+name);
   return requestp({
       method: 'PUT',
       uri: this.url + '/' + name,
