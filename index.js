@@ -18,7 +18,7 @@ SwiftClient.create = function (url, username, password) {
   var _this = this;
 
   return requestp({
-      method: 'POST',
+      method: 'GET',
       uri: url,
       headers: {
         'x-auth-user': username,
@@ -40,7 +40,7 @@ SwiftClient.prototype.create = function (name, publicRead, meta, extra) {
   if (publicRead) {
     if (!extra)
       extra = {};
-    
+
     extra['x-container-read'] = '.r:*';
   }
 
