@@ -43,7 +43,6 @@ SwiftClient.prototype.create = function (name, publicRead, meta, extra) {
 
     extra['x-container-read'] = '.r:*';
   }
-  console.log("this url is: "+this.url+"/"+name);
   return requestp({
       method: 'PUT',
       uri: this.url + '/' + name,
